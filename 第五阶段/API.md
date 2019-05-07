@@ -1,6 +1,8 @@
 # API
 XianYux闲余挣闲钱系统API文档
 
+**（涉及到手机验证码的API都不可用，而其它的API已完成，但未进行测试）**
+
 - [API](#api)
 - [服务器IP和端口号](#%E6%9C%8D%E5%8A%A1%E5%99%A8ip%E5%92%8C%E7%AB%AF%E5%8F%A3%E5%8F%B7)
 - [Session](#session)
@@ -17,8 +19,10 @@ XianYux闲余挣闲钱系统API文档
   - [用户退出登录](#%E7%94%A8%E6%88%B7%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95)
   - [获取当前用户的余额](#%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E7%94%A8%E6%88%B7%E7%9A%84%E4%BD%99%E9%A2%9D)
   - [获得当前用户发布/领取的所有任务id和共同属性](#%E8%8E%B7%E5%BE%97%E5%BD%93%E5%89%8D%E7%94%A8%E6%88%B7%E5%8F%91%E5%B8%83%E9%A2%86%E5%8F%96%E7%9A%84%E6%89%80%E6%9C%89%E4%BB%BB%E5%8A%A1id%E5%92%8C%E5%85%B1%E5%90%8C%E5%B1%9E%E6%80%A7)
-  - [根据用户id获取个人信息](#%E6%A0%B9%E6%8D%AE%E7%94%A8%E6%88%B7id%E8%8E%B7%E5%8F%96%E4%B8%AA%E4%BA%BA%E4%BF%A1%E6%81%AF)
-  - [获取当前用户的所有关注者的id](#%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E7%94%A8%E6%88%B7%E7%9A%84%E6%89%80%E6%9C%89%E5%85%B3%E6%B3%A8%E8%80%85%E7%9A%84id)
+  - [根据用户/关注的人/粉丝id获取用户信息(user_id/following_id/fan_id都适用)](#%E6%A0%B9%E6%8D%AE%E7%94%A8%E6%88%B7%E5%85%B3%E6%B3%A8%E7%9A%84%E4%BA%BA%E7%B2%89%E4%B8%9Did%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AFuseridfollowingidfanid%E9%83%BD%E9%80%82%E7%94%A8)
+  - [当前用户关注其它用户](#%E5%BD%93%E5%89%8D%E7%94%A8%E6%88%B7%E5%85%B3%E6%B3%A8%E5%85%B6%E5%AE%83%E7%94%A8%E6%88%B7)
+  - [当前用户取关其它用户](#%E5%BD%93%E5%89%8D%E7%94%A8%E6%88%B7%E5%8F%96%E5%85%B3%E5%85%B6%E5%AE%83%E7%94%A8%E6%88%B7)
+  - [获取当前用户关注的所有用户的id](#%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E7%94%A8%E6%88%B7%E5%85%B3%E6%B3%A8%E7%9A%84%E6%89%80%E6%9C%89%E7%94%A8%E6%88%B7%E7%9A%84id)
   - [获取当前用户的所有粉丝的id](#%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E7%94%A8%E6%88%B7%E7%9A%84%E6%89%80%E6%9C%89%E7%B2%89%E4%B8%9D%E7%9A%84id)
 - [任务](#%E4%BB%BB%E5%8A%A1)
   - [关于任务API（注意事项）](#%E5%85%B3%E4%BA%8E%E4%BB%BB%E5%8A%A1api%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)
@@ -26,16 +30,15 @@ XianYux闲余挣闲钱系统API文档
   - [根据任务id获取拿快递和外卖的详细信息](#%E6%A0%B9%E6%8D%AE%E4%BB%BB%E5%8A%A1id%E8%8E%B7%E5%8F%96%E6%8B%BF%E5%BF%AB%E9%80%92%E5%92%8C%E5%A4%96%E5%8D%96%E7%9A%84%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF)
   - [根据任务id获取问卷和题目的详细信息](#%E6%A0%B9%E6%8D%AE%E4%BB%BB%E5%8A%A1id%E8%8E%B7%E5%8F%96%E9%97%AE%E5%8D%B7%E5%92%8C%E9%A2%98%E7%9B%AE%E7%9A%84%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF)
   - [接受任务](#%E6%8E%A5%E5%8F%97%E4%BB%BB%E5%8A%A1)
-  - [完成任务](#%E5%AE%8C%E6%88%90%E4%BB%BB%E5%8A%A1)
-  - [取消发布任务](#%E5%8F%96%E6%B6%88%E5%8F%91%E5%B8%83%E4%BB%BB%E5%8A%A1)
-  - [新建一个拿快递和外卖的任务](#%E6%96%B0%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%8B%BF%E5%BF%AB%E9%80%92%E5%92%8C%E5%A4%96%E5%8D%96%E7%9A%84%E4%BB%BB%E5%8A%A1)
-  - [新建一个问卷任务](#%E6%96%B0%E5%BB%BA%E4%B8%80%E4%B8%AA%E9%97%AE%E5%8D%B7%E4%BB%BB%E5%8A%A1)
+  - [完成拿快递和外卖的任务(平台把钱给领取者)](#%E5%AE%8C%E6%88%90%E6%8B%BF%E5%BF%AB%E9%80%92%E5%92%8C%E5%A4%96%E5%8D%96%E7%9A%84%E4%BB%BB%E5%8A%A1%E5%B9%B3%E5%8F%B0%E6%8A%8A%E9%92%B1%E7%BB%99%E9%A2%86%E5%8F%96%E8%80%85)
+  - [发布者取消拿快递和外卖的任务(钱退回给发布者)](#%E5%8F%91%E5%B8%83%E8%80%85%E5%8F%96%E6%B6%88%E6%8B%BF%E5%BF%AB%E9%80%92%E5%92%8C%E5%A4%96%E5%8D%96%E7%9A%84%E4%BB%BB%E5%8A%A1%E9%92%B1%E9%80%80%E5%9B%9E%E7%BB%99%E5%8F%91%E5%B8%83%E8%80%85)
+  - [新建一个拿快递和外卖的任务(发布者把钱给平台)](#%E6%96%B0%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%8B%BF%E5%BF%AB%E9%80%92%E5%92%8C%E5%A4%96%E5%8D%96%E7%9A%84%E4%BB%BB%E5%8A%A1%E5%8F%91%E5%B8%83%E8%80%85%E6%8A%8A%E9%92%B1%E7%BB%99%E5%B9%B3%E5%8F%B0)
+  - [新建一个问卷任务(发布者把钱给平台)](#%E6%96%B0%E5%BB%BA%E4%B8%80%E4%B8%AA%E9%97%AE%E5%8D%B7%E4%BB%BB%E5%8A%A1%E5%8F%91%E5%B8%83%E8%80%85%E6%8A%8A%E9%92%B1%E7%BB%99%E5%B9%B3%E5%8F%B0)
   - [填写者提交问卷的答案](#%E5%A1%AB%E5%86%99%E8%80%85%E6%8F%90%E4%BA%A4%E9%97%AE%E5%8D%B7%E7%9A%84%E7%AD%94%E6%A1%88)
-  - [填写者获取包含题目和答案的答卷](#%E5%A1%AB%E5%86%99%E8%80%85%E8%8E%B7%E5%8F%96%E5%8C%85%E5%90%AB%E9%A2%98%E7%9B%AE%E5%92%8C%E7%AD%94%E6%A1%88%E7%9A%84%E7%AD%94%E5%8D%B7)
+  - [填写者获取自己填写过的答卷(包含题目和答案)](#%E5%A1%AB%E5%86%99%E8%80%85%E8%8E%B7%E5%8F%96%E8%87%AA%E5%B7%B1%E5%A1%AB%E5%86%99%E8%BF%87%E7%9A%84%E7%AD%94%E5%8D%B7%E5%8C%85%E5%90%AB%E9%A2%98%E7%9B%AE%E5%92%8C%E7%AD%94%E6%A1%88)
   - [发布者查看问卷的统计信息](#%E5%8F%91%E5%B8%83%E8%80%85%E6%9F%A5%E7%9C%8B%E9%97%AE%E5%8D%B7%E7%9A%84%E7%BB%9F%E8%AE%A1%E4%BF%A1%E6%81%AF)
   - [发布者截止问卷](#%E5%8F%91%E5%B8%83%E8%80%85%E6%88%AA%E6%AD%A2%E9%97%AE%E5%8D%B7)
 - [账单](#%E8%B4%A6%E5%8D%95)
-  - [新增当前用户的交易记录](#%E6%96%B0%E5%A2%9E%E5%BD%93%E5%89%8D%E7%94%A8%E6%88%B7%E7%9A%84%E4%BA%A4%E6%98%93%E8%AE%B0%E5%BD%95)
   - [获取当前用户的交易历史](#%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E7%94%A8%E6%88%B7%E7%9A%84%E4%BA%A4%E6%98%93%E5%8E%86%E5%8F%B2)
   - [当前用户的闲余币充值](#%E5%BD%93%E5%89%8D%E7%94%A8%E6%88%B7%E7%9A%84%E9%97%B2%E4%BD%99%E5%B8%81%E5%85%85%E5%80%BC)
 
@@ -47,8 +50,8 @@ XianYux闲余挣闲钱系统API文档
 
 # Session
 
-* 用户id: request.session['user_id']
-* 登录状态: request.session['login']
+* 用户id: request.session['user_id']: integer
+* 登录状态: request.session['login']: bool
 
 
 
@@ -135,8 +138,9 @@ XianYux闲余挣闲钱系统API文档
 
 ```
 {
-    "user_phone":       string,    //手机号
-    "user_password":    string     //密码
+    "user_phone":           string,    //手机号
+    "user_password":        string,    //密码
+    "verification_code":    string     //参数增加手机验证码，为了防止越过短信验证而直接注册
 }
 ```
 
@@ -160,6 +164,7 @@ XianYux闲余挣闲钱系统API文档
 ```
     "code": 400,
     "message": "该手机号已经被注册"  //服务器发生错误（备选）
+                                   //无效的手机号（备选）
 ```
 
 
@@ -481,14 +486,16 @@ XianYux闲余挣闲钱系统API文档
 {
     "code":                    integer,    
     "message":                 string,
-    "task": {
-        "task_id":             integer,    //任务id
-        "user_id":             integer,    //发布者id
-        "task_type":           integer,    //任务类型，0为拿快递和外卖，1为填问卷
-        "task_sketch":         string,     //任务简述
-        "task_bonus":          integer,    //任务酬劳
-        "task_publishDate":    string      //发布日期
-    }
+    "tasks": [
+        {
+            "task_id":             integer,    //任务id
+            "user_id":             integer,    //发布者id
+            "task_type":           integer,    //任务类型，0为拿快递和外卖，1为填问卷
+            "task_sketch":         string,     //任务简述
+            "task_bonus":          integer,    //任务酬劳
+            "task_publishDate":    string      //发布日期
+        }
+    ]
 }
 ```
 
@@ -499,9 +506,11 @@ XianYux闲余挣闲钱系统API文档
 {
     "code":                    integer,    
     "message":                 string,
-    "task": {
-        //省略...
-    }
+    "tasks": [
+        {
+            //省略...
+        }
+    ]
 }
 ```
 - 400
@@ -521,7 +530,7 @@ XianYux闲余挣闲钱系统API文档
 
 
 
-## 根据用户id获取个人信息
+## 根据用户/关注的人/粉丝id获取用户信息(user_id/following_id/fan_id都适用)
 
 > `GET /user/information`
 
@@ -598,8 +607,93 @@ XianYux闲余挣闲钱系统API文档
 ```
 
 
+## 当前用户关注其它用户
 
-## 获取当前用户的所有关注者的id
+> `POST /user/following`
+
+**参数**
+```
+{
+    "user_id":    integer    //要关注的其他用户的id
+}
+```
+
+**返回值**
+
+```
+{
+    "code":       integer,    //状态码
+    "message":    string,     //信息
+}
+```
+
+**返回示例**
+
+- 200
+```
+{
+    "code": 200,
+    "message": "OK",
+}
+```
+- 400
+```
+    "code": 400,
+    "message": "服务器发生错误"
+```
+
+- 401
+
+```
+    "code": 401,
+    "message": "用户未登录"
+```
+
+
+## 当前用户取关其它用户
+
+> `DELETE /user/following`
+
+**参数**
+```
+{
+    "user_id":    integer    //要取关的其他用户的id
+}
+```
+
+**返回值**
+
+```
+{
+    "code":       integer,    //状态码
+    "message":    string,     //信息
+}
+```
+
+**返回示例**
+
+- 200
+```
+{
+    "code": 200,
+    "message": "OK",
+}
+```
+- 400
+```
+    "code": 400,
+    "message": "服务器发生错误"
+```
+
+- 401
+
+```
+    "code": 401,
+    "message": "用户未登录"
+```
+
+
+## 获取当前用户关注的所有用户的id
 
 > `GET /user/followings`
 
@@ -616,7 +710,7 @@ XianYux闲余挣闲钱系统API文档
     "message":          string,     //信息
     "followings": [
         {
-            user_id:    integer     //元素是int的用户id
+            "following_id":    integer     //元素是当前用户关注的用户的id
         }
     ]
 }
@@ -631,10 +725,10 @@ XianYux闲余挣闲钱系统API文档
     "message": "OK",
     "followings": [
         {
-            user_id: 5    
+            "following_id": 5    
         }
         {
-            user_id: 12    
+            "following_id": 12    
         }
         ...
     ]
@@ -654,7 +748,6 @@ XianYux闲余挣闲钱系统API文档
 ```
 
 
-
 ## 获取当前用户的所有粉丝的id 
 > `GET /user/fans`
 
@@ -670,7 +763,7 @@ XianYux闲余挣闲钱系统API文档
     "message":          string,     //信息
     "fans": [
         {
-            user_id:    integer     //元素是int的用户id
+            "fan_id":    integer     //元素是用户的粉丝的id
         }
     ]
 }
@@ -684,10 +777,10 @@ XianYux闲余挣闲钱系统API文档
     "message": "OK",
     "fans": [
         {
-            user_id: 5    
+            "fan_id": 5    
         }
         {
-            user_id: 12    
+            "fan_id": 12    
         }
         ...
     ]
@@ -737,7 +830,7 @@ XianYux闲余挣闲钱系统API文档
 
 ```
 {
-    "type":    integer    //0为最新任务, 1关注的人发布的任务, 2为价格降序，3为价格升序
+    "type":    integer    //0为最新任务, 1关注的人发布的任务, 2为价格最高
 }
 ```
 
@@ -749,12 +842,12 @@ XianYux闲余挣闲钱系统API文档
     "message":                    string,     //信息
     "tasks": [    
         {
-            "task_id":            integer,    //订单ID(主键)
+            "task_id":            integer,    //任务ID(主键)
             "user_id":            integer,    //发布者id	
-            "task_type":          string,     //订单类型，0为拿快递和外卖，1为问卷
+            "task_type":          string,     //任务类型，0为拿快递和外卖，1为问卷
             "task_sketch":        string,     //任务简介
             "task_bonus":         integer,    //悬赏金额
-            "task_publishDate"    string      //发布时间
+            "task_publishDate"    string      //发布时间，#格式为YYYY-MM-DD HH:MM:SS
         }
     ]
 }
@@ -811,12 +904,13 @@ XianYux闲余挣闲钱系统API文档
         "delivery_detail":         string,     //订单类型，0为拿快递和外卖，1为问卷
         "delivery_picked":         string,     //任务简介
         "delivery_complished":     integer,    //悬赏金额
-        "delivery_complishDate"    string      //发布时间
+        "delivery_complishDate"    string      //发布时间，#格式为YYYY-MM-DD HH:MM:SS
     }
 }
 ```
 
 **返回示例**
+
 - 200
 ```
 {
@@ -865,7 +959,7 @@ XianYux闲余挣闲钱系统API文档
         "questionnaire_id":                integer,    //问卷id
         "task_id":                         integer,    //问卷对应的任务id
         "questionnaire_closed":            integer,    //是否截止
-        "questionnaire_deadline":          string,     //截止时间
+        "questionnaire_deadline":          string,     //截止时间，#格式为YYYY-MM-DD HH:MM:SS
         "questions": [
             {
                 "question_id":             integer,    //题目id
@@ -931,6 +1025,7 @@ XianYux闲余挣闲钱系统API文档
 ```
 
 **返回示例**
+
 - 200
 ```
 {
@@ -953,9 +1048,9 @@ XianYux闲余挣闲钱系统API文档
 
 
 
-## 完成任务
+## 完成拿快递和外卖的任务(平台把钱给领取者)
 
-> `POST /task/complishment` 
+> `POST /task/delivery/complishment` 
 
 **参数**
 
@@ -1003,9 +1098,9 @@ XianYux闲余挣闲钱系统API文档
 
 
 
-## 取消发布任务
+## 发布者取消拿快递和外卖的任务(钱退回给发布者)
 
-> `DELETE /task` 
+> `DELETE /task/delivery` 
 
 **参数**
 
@@ -1016,6 +1111,7 @@ XianYux闲余挣闲钱系统API文档
 ```
 
 **返回值**
+
 ```
 {
     "code":       integer,    //状态码
@@ -1024,6 +1120,7 @@ XianYux闲余挣闲钱系统API文档
 ```
 
 **返回示例**
+
 - 200
 ```
 {
@@ -1045,7 +1142,7 @@ XianYux闲余挣闲钱系统API文档
 ```
 
 
-## 新建一个拿快递和外卖的任务
+## 新建一个拿快递和外卖的任务(发布者把钱给平台)
 
 > `POST /task/delivery` 
 
@@ -1089,6 +1186,13 @@ XianYux闲余挣闲钱系统API文档
 - 400
 ```
     "code": 400,
+    "message": "余额不足"
+```
+
+
+
+```
+    "code": 400,
     "message": "服务器发生错误"
 ```
 - 401
@@ -1098,7 +1202,7 @@ XianYux闲余挣闲钱系统API文档
     "message": "用户未登录"
 ```
 
-## 新建一个问卷任务
+## 新建一个问卷任务(发布者把钱给平台)
 
 > `POST /task/questionnaire` 
 
@@ -1115,6 +1219,7 @@ XianYux闲余挣闲钱系统API文档
     "questionnaire": {
         "questionnaire_closed":            integer,    //是否截止
         "questionnaire_deadline":          string,     //截止时间
+        "questionnaire_number":			   integer,	   //打算发布的问卷份数(task_bonus * questionnaire_number = 总金额)
         "questions": [
             {
                 "question_description":    string,     //题目描述
@@ -1205,7 +1310,7 @@ XianYux闲余挣闲钱系统API文档
     "message": "用户未登录"
 ```
 
-## 填写者获取包含题目和答案的答卷
+## 填写者获取自己填写过的答卷(包含题目和答案)
 
 > `GET /task/questionnaire/answerSheet` 
 
@@ -1225,7 +1330,7 @@ XianYux闲余挣闲钱系统API文档
     "message":                             string      //信息
     "answerSheet": [
         {
-            question: {
+            "question": {
                 "question_id":             integer,    //题目id
                 "questionnaire_id":        integer,    //问卷id
                 "question_description":    string,     //问题描述
@@ -1247,6 +1352,7 @@ XianYux闲余挣闲钱系统API文档
 ```
 
 **返回示例**
+
 - 200
 ```
 {
@@ -1284,7 +1390,7 @@ XianYux闲余挣闲钱系统API文档
 {
     "code":                                     integer,    //状态码
     "message":                                  string      //信息
-    "Statistics": [
+    "statistics": [
         {
             question: {
                 "question_id":                  integer,    //题目id
@@ -1297,9 +1403,7 @@ XianYux闲余挣闲钱系统API文档
                 "question_d":                   string,
             }
             "answer": {
-                "answer_id":                    integer,    //答案id
-                "answerSheet_id":               integer,    //答卷id
-                "question_id":                  integer,    //问题id
+            	"answer_id":                  	integer,    //答案id
                 "answer_a_count":               integer,    //选A的数量
                 "answer_b_count":               integer,  
                 "answer_c_count":               integer,  
@@ -1316,6 +1420,7 @@ XianYux闲余挣闲钱系统API文档
 ```
 
 **返回示例**
+
 - 200
 ```
 {
@@ -1379,51 +1484,6 @@ XianYux闲余挣闲钱系统API文档
 
 
 # 账单
-
-## 新增当前用户的交易记录
-
-> `POST /bill`
-
-**参数**
-
-```
-{
-    "bill_type":            integer,    //0为收入，1为支出
-    "bill_number":          integer,    //账单金额
-    "bill_description":     string,     //账单描述
-    "bill_time":            string,     //账单时间
-}
-```
-
-**返回值**
-
-```
-{
-    "code":       integer,    //状态码
-    "message":    string      //信息
-}
-```
-
-**返回示例**
-- 200
-```
-{
-    "code": 200,
-    "message": "OK"
-}
-```
-- 400
-```
-    "code": 400,
-    "message": "服务器发生错误"
-```
-
-- 401
-
-```
-    "code": 401,
-    "message": "用户未登录"
-```
 
 
 ## 获取当前用户的交易历史
