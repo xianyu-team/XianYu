@@ -1,12 +1,12 @@
 # API
 XianYux闲余挣闲钱系统API文档
 
-**（API已完成，但未进行测试）**
-
 - [API](#api)
 - [服务器IP和端口号](#%E6%9C%8D%E5%8A%A1%E5%99%A8ip%E5%92%8C%E7%AB%AF%E5%8F%A3%E5%8F%B7)
-- [前端请求参数的数据类型](#%E5%89%8D%E7%AB%AF%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B)
-- [Session](#session)
+- [前端请求设置（注意！！！）](#%E5%89%8D%E7%AB%AF%E8%AF%B7%E6%B1%82%E8%AE%BE%E7%BD%AE%E6%B3%A8%E6%84%8F)
+  - [前端请求路径](#%E5%89%8D%E7%AB%AF%E8%AF%B7%E6%B1%82%E8%B7%AF%E5%BE%84)
+  - [前端请求参数的数据类型](#%E5%89%8D%E7%AB%AF%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B)
+  - [前端请求header设置X-CSRFtoken](#%E5%89%8D%E7%AB%AF%E8%AF%B7%E6%B1%82header%E8%AE%BE%E7%BD%AEx-csrftoken)
 - [手机短信](#%E6%89%8B%E6%9C%BA%E7%9F%AD%E4%BF%A1)
   - [向手机发送验证码](#%E5%90%91%E6%89%8B%E6%9C%BA%E5%8F%91%E9%80%81%E9%AA%8C%E8%AF%81%E7%A0%81)
   - [验证手机验证码](#%E9%AA%8C%E8%AF%81%E6%89%8B%E6%9C%BA%E9%AA%8C%E8%AF%81%E7%A0%81)
@@ -30,12 +30,12 @@ XianYux闲余挣闲钱系统API文档
   - [获取任务大厅的所有任务id和共同属性](#%E8%8E%B7%E5%8F%96%E4%BB%BB%E5%8A%A1%E5%A4%A7%E5%8E%85%E7%9A%84%E6%89%80%E6%9C%89%E4%BB%BB%E5%8A%A1id%E5%92%8C%E5%85%B1%E5%90%8C%E5%B1%9E%E6%80%A7)
   - [根据任务id获取拿快递和外卖的详细信息](#%E6%A0%B9%E6%8D%AE%E4%BB%BB%E5%8A%A1id%E8%8E%B7%E5%8F%96%E6%8B%BF%E5%BF%AB%E9%80%92%E5%92%8C%E5%A4%96%E5%8D%96%E7%9A%84%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF)
   - [根据任务id获取问卷和题目的详细信息](#%E6%A0%B9%E6%8D%AE%E4%BB%BB%E5%8A%A1id%E8%8E%B7%E5%8F%96%E9%97%AE%E5%8D%B7%E5%92%8C%E9%A2%98%E7%9B%AE%E7%9A%84%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF)
-  - [接受任务](#%E6%8E%A5%E5%8F%97%E4%BB%BB%E5%8A%A1)
+  - [接受一个跑腿的任务(前端需要判断任务是否是自己发布的, 是否有人领取了, 是否取消了)](#%E6%8E%A5%E5%8F%97%E4%B8%80%E4%B8%AA%E8%B7%91%E8%85%BF%E7%9A%84%E4%BB%BB%E5%8A%A1%E5%89%8D%E7%AB%AF%E9%9C%80%E8%A6%81%E5%88%A4%E6%96%AD%E4%BB%BB%E5%8A%A1%E6%98%AF%E5%90%A6%E6%98%AF%E8%87%AA%E5%B7%B1%E5%8F%91%E5%B8%83%E7%9A%84-%E6%98%AF%E5%90%A6%E6%9C%89%E4%BA%BA%E9%A2%86%E5%8F%96%E4%BA%86-%E6%98%AF%E5%90%A6%E5%8F%96%E6%B6%88%E4%BA%86)
   - [完成拿快递和外卖的任务(平台把钱给领取者)](#%E5%AE%8C%E6%88%90%E6%8B%BF%E5%BF%AB%E9%80%92%E5%92%8C%E5%A4%96%E5%8D%96%E7%9A%84%E4%BB%BB%E5%8A%A1%E5%B9%B3%E5%8F%B0%E6%8A%8A%E9%92%B1%E7%BB%99%E9%A2%86%E5%8F%96%E8%80%85)
-  - [发布者取消拿快递和外卖的任务(钱退回给发布者)](#%E5%8F%91%E5%B8%83%E8%80%85%E5%8F%96%E6%B6%88%E6%8B%BF%E5%BF%AB%E9%80%92%E5%92%8C%E5%A4%96%E5%8D%96%E7%9A%84%E4%BB%BB%E5%8A%A1%E9%92%B1%E9%80%80%E5%9B%9E%E7%BB%99%E5%8F%91%E5%B8%83%E8%80%85)
-  - [新建一个拿快递和外卖的任务(发布者把钱给平台)](#%E6%96%B0%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%8B%BF%E5%BF%AB%E9%80%92%E5%92%8C%E5%A4%96%E5%8D%96%E7%9A%84%E4%BB%BB%E5%8A%A1%E5%8F%91%E5%B8%83%E8%80%85%E6%8A%8A%E9%92%B1%E7%BB%99%E5%B9%B3%E5%8F%B0)
-  - [新建一个问卷任务(发布者把钱给平台)](#%E6%96%B0%E5%BB%BA%E4%B8%80%E4%B8%AA%E9%97%AE%E5%8D%B7%E4%BB%BB%E5%8A%A1%E5%8F%91%E5%B8%83%E8%80%85%E6%8A%8A%E9%92%B1%E7%BB%99%E5%B9%B3%E5%8F%B0)
-  - [填写者提交问卷的答案](#%E5%A1%AB%E5%86%99%E8%80%85%E6%8F%90%E4%BA%A4%E9%97%AE%E5%8D%B7%E7%9A%84%E7%AD%94%E6%A1%88)
+  - [发布者取消拿快递和外卖的任务(钱退回给发布者)(前端需要保证只能取消未完成的任务)](#%E5%8F%91%E5%B8%83%E8%80%85%E5%8F%96%E6%B6%88%E6%8B%BF%E5%BF%AB%E9%80%92%E5%92%8C%E5%A4%96%E5%8D%96%E7%9A%84%E4%BB%BB%E5%8A%A1%E9%92%B1%E9%80%80%E5%9B%9E%E7%BB%99%E5%8F%91%E5%B8%83%E8%80%85%E5%89%8D%E7%AB%AF%E9%9C%80%E8%A6%81%E4%BF%9D%E8%AF%81%E5%8F%AA%E8%83%BD%E5%8F%96%E6%B6%88%E6%9C%AA%E5%AE%8C%E6%88%90%E7%9A%84%E4%BB%BB%E5%8A%A1)
+  - [新建一个拿快递和外卖的任务(发布者把钱寄存在平台上, 当任务完成, 平台将钱给完成者)](#%E6%96%B0%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%8B%BF%E5%BF%AB%E9%80%92%E5%92%8C%E5%A4%96%E5%8D%96%E7%9A%84%E4%BB%BB%E5%8A%A1%E5%8F%91%E5%B8%83%E8%80%85%E6%8A%8A%E9%92%B1%E5%AF%84%E5%AD%98%E5%9C%A8%E5%B9%B3%E5%8F%B0%E4%B8%8A-%E5%BD%93%E4%BB%BB%E5%8A%A1%E5%AE%8C%E6%88%90-%E5%B9%B3%E5%8F%B0%E5%B0%86%E9%92%B1%E7%BB%99%E5%AE%8C%E6%88%90%E8%80%85)
+  - [新建一个问卷任务(执行这个操作, 发布者会先把钱给平台)](#%E6%96%B0%E5%BB%BA%E4%B8%80%E4%B8%AA%E9%97%AE%E5%8D%B7%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E8%BF%99%E4%B8%AA%E6%93%8D%E4%BD%9C-%E5%8F%91%E5%B8%83%E8%80%85%E4%BC%9A%E5%85%88%E6%8A%8A%E9%92%B1%E7%BB%99%E5%B9%B3%E5%8F%B0)
+  - [填写者提交问卷的答案(前端需要保证只填写未截止的问卷)](#%E5%A1%AB%E5%86%99%E8%80%85%E6%8F%90%E4%BA%A4%E9%97%AE%E5%8D%B7%E7%9A%84%E7%AD%94%E6%A1%88%E5%89%8D%E7%AB%AF%E9%9C%80%E8%A6%81%E4%BF%9D%E8%AF%81%E5%8F%AA%E5%A1%AB%E5%86%99%E6%9C%AA%E6%88%AA%E6%AD%A2%E7%9A%84%E9%97%AE%E5%8D%B7)
   - [填写者获取自己填写过的答卷(包含题目和答案)](#%E5%A1%AB%E5%86%99%E8%80%85%E8%8E%B7%E5%8F%96%E8%87%AA%E5%B7%B1%E5%A1%AB%E5%86%99%E8%BF%87%E7%9A%84%E7%AD%94%E5%8D%B7%E5%8C%85%E5%90%AB%E9%A2%98%E7%9B%AE%E5%92%8C%E7%AD%94%E6%A1%88)
   - [发布者查看问卷的统计信息](#%E5%8F%91%E5%B8%83%E8%80%85%E6%9F%A5%E7%9C%8B%E9%97%AE%E5%8D%B7%E7%9A%84%E7%BB%9F%E8%AE%A1%E4%BF%A1%E6%81%AF)
   - [发布者截止问卷](#%E5%8F%91%E5%B8%83%E8%80%85%E6%88%AA%E6%AD%A2%E9%97%AE%E5%8D%B7)
@@ -48,14 +48,25 @@ XianYux闲余挣闲钱系统API文档
 - Port : 8000
 
 
-# 前端请求参数的数据类型
-- 前端的请求参数为`json`类型，在请求的header中设置为`application/json`
+# 前端请求设置（注意！！！）
 
+## 前端请求路径
 
-# Session
+例如，密码登录的请求路径为：http://120.77.146.251:8000/user/password/session
 
-* 用户id: request.session['user_id']: integer
-* 登录状态: request.session['is_login']: bool
+其它API同理
+
+## 前端请求参数的数据类型
+
+前端的请求参数为`json`类型，在请求的header中设置为`"Content-Type": "application/json"`
+
+## 前端请求header设置X-CSRFtoken
+
+登录后，后端会在cookie中设置csrftoken(string类型)并返回给前端
+
+对于登录后的请求, 前端需要获取cookie，然后在cookie中获取csrftoken字段的值，类似于`csrf = cookies.get("csrftoken")`
+
+获取了csrftoken，就在header中设置X-CSRFtoken字段：`"X-CSRFtoken": csrf`，若csrf为空，就设置为：`"X-CSRFtoken": ""`，否则会无法通过csrf验证, 返回一个403
 
 
 # 手机短信
@@ -65,8 +76,11 @@ XianYux闲余挣闲钱系统API文档
 
 **参数**
 ```
-把 url 中的 {user_phone} 替换成 11 位数字手机号，如下所示：
+把 url 中的 {user_phone} 替换成 11 位数字手机号
+```
 
+**参数示例**
+```
 GET /sms/verification_code/15989061915
 ```
 
@@ -105,6 +119,14 @@ GET /sms/verification_code/15989061915
 {
     "user_phone":           string,    //手机号
     "verification_code":    string,    //验证码
+}
+```
+
+**参数示例**
+```
+{
+    "user_phone": "15989061915",
+    "verification_code": "5218"
 }
 ```
 
@@ -148,6 +170,15 @@ GET /sms/verification_code/15989061915
 }
 ```
 
+**参数示例**
+```
+{
+    "user_phone": "15989061915",
+    "user_password": "123456",
+    "verification_code": "4892"
+}
+```
+
 **返回值**
 ```
 {
@@ -186,6 +217,18 @@ GET /sms/verification_code/15989061915
     "student_academy":        string,    //学院
     "student_number":         string,    //学号
     "student_gender":         integer    //性别，0为女，1为男
+}
+```
+
+**参数示例**
+```
+{
+    "user_icon": "dxba1at...",
+    "student_name": "陈xx",
+    "student_university": "中山大学",
+    "student_academy": "数据科学与计算机学院",
+    "student_number": "16340034",
+    "student_gender": 1
 }
 ```
 
@@ -294,6 +337,14 @@ GET /sms/verification_code/15989061915
 }
 ```
 
+**参数示例**
+```
+{
+    "user_phone": "15989061915",
+    "user_password": "123456"
+}
+```
+
 **返回值**
 
 ```
@@ -345,6 +396,15 @@ GET /sms/verification_code/15989061915
 }
 ```
 
+**参数示例**
+```
+{
+    "user_phone": "15989061915"
+    "user_password": "123456"
+    "verification_code": "5489"
+}
+```
+
 **返回值**
 ```
 {
@@ -379,6 +439,14 @@ GET /sms/verification_code/15989061915
 {
     "user_phone":           string,    //手机号
     "verification_code":    string     //验证码
+}
+```
+
+**参数示例**
+```
+{
+    "user_phone": "15989061915",
+    "verification_code": "1548"
 }
 ```
 
@@ -504,8 +572,13 @@ GET /sms/verification_code/15989061915
 
 ```
 {
-    把 url 中的 {t_type} 替换成integer类型的 0 或 1 ，0为用户发布的，1为用户领取的,如下所示：
+    把 url 中的 {t_type} 替换成integer类型的 0 或 1 ，0为用户发布的，1为用户领取的
+}
+```
 
+**参数示例**
+```
+{
     GET /user/tasks/1
 }
 ```
@@ -580,6 +653,23 @@ GET /sms/verification_code/15989061915
             "user_id":    integer    //用户id
         }
     ]
+}
+```
+
+**参数示例**
+```
+{
+    "user_ids":  [
+        {
+            "user_id": 1
+        },
+        {
+            "user_id": 2
+        },
+        {
+            "user_id": 3
+        }
+    ]  
 }
 ```
 
@@ -658,6 +748,13 @@ GET /sms/verification_code/15989061915
 }
 ```
 
+**参数示例**
+```
+{
+    "user_id": 1
+}
+```
+
 **返回值**
 
 ```
@@ -700,6 +797,13 @@ GET /sms/verification_code/15989061915
 ```
 {
     "user_id":    integer    //要取关的其他用户的id
+}
+```
+
+**参数示例**
+```
+{
+    "user_id": 1
 }
 ```
 
@@ -876,8 +980,8 @@ GET /sms/verification_code/15989061915
 所以前端获取关于任务的信息时，必须先获取任务的共同属性，得到该任务的类型（递送任务或问卷任务），然后再根据递送任务或问卷任务的API获取特殊的信息。
 
 ## 获取任务大厅的所有任务id和共同属性
-> `GET /task`/{t_type}
-
+> `GET /task/{t_type}`
+`已测试`
 **参数**	
 
 ```
@@ -892,17 +996,17 @@ GET /sms/verification_code/15989061915
 
 ```
 {
-    "code":                       integer,    //状态码
-    "message":                    string,     //信息
+    "code":                             integer,    //状态码
+    "message":                          string,     //信息
     "data": {
          tasks": [    
             {
-                "task_id":            integer,    //任务ID(主键)
-                "user_id":            integer,    //发布者id	
-                "task_type":          string,     //任务类型，0为拿快递和外卖，1为问卷
-                "task_sketch":        string,     //任务简介
-                "task_bonus":         integer,    //悬赏金额
-                "task_publishDate"    string      //发布时间，#格式为YYYY-MM-DD HH:MM:SS
+                "task_id":              integer,    //任务ID(主键)
+                "user_id":              integer,    //发布者id	
+                "task_type":            string,     //任务类型，0为拿快递和外卖，1为问卷
+                "task_sketch":          string,     //任务简介
+                "task_bonus":           integer,    //悬赏金额
+                "task_publishDate":     string      //发布时间，#格式为YYYY-MM-DD HH:MM:SS
             }
         ]   
     }
@@ -942,7 +1046,7 @@ GET /sms/verification_code/15989061915
 ## 根据任务id获取拿快递和外卖的详细信息
 
 > `GET /task/delivery/detail/{task_id}`
-
+`已测试`
 **参数**	
 
 ```
@@ -955,16 +1059,16 @@ GET /sms/verification_code/15989061915
 
 ```
 {
-    "code":                        integer,    //状态码
-    "message":                     string,     //信息
+    "code":                             integer,    //状态码
+    "message":                          string,     //信息
     "data": {
   		"delivery": {
-            "delivery_id":             integer,    //递送任务id
-            "task_id":                 integer,    //递送任务对应的任务id
-            "delivery_detail":         string,     //订单类型，0为拿快递和外卖，1为问卷
-            "delivery_picked":         string,     //任务简介
-            "delivery_complished":     integer,    //悬赏金额
-            "delivery_complishDate"    string      //发布时间，#格式为YYYY-MM-DD HH:MM:SS
+            "delivery_id":              integer,    //递送任务id
+            "task_id":                  integer,    //递送任务对应的任务id
+            "delivery_detail":          string,     //订单类型，0为拿快递和外卖，1为问卷
+            "delivery_picked":          string,     //任务简介
+            "delivery_complished":      integer,    //悬赏金额
+            "delivery_complishDate"     string      //发布时间，#格式为YYYY-MM-DD HH:MM:SS
         }      
     }
 
@@ -1002,7 +1106,7 @@ GET /sms/verification_code/15989061915
 ## 根据任务id获取问卷和题目的详细信息
 
 > `GET /task/questionnaire/detail/{task_id}`
-
+`已测试`
 **参数**	
 
 ```
@@ -1015,24 +1119,24 @@ GET /sms/verification_code/15989061915
 
 ```
 {
-    "code":                                integer,    //状态码
-    "message":                             string,     //信息
+    "code":                                     integer,    //状态码
+    "message":                                  string,     //信息
     "data": {
     	"questionnaire": {
-            "questionnaire_id":                integer,    //问卷id
-            "task_id":                         integer,    //问卷对应的任务id
-            "questionnaire_closed":            integer,    //是否截止
-            "questionnaire_deadline":          string,     //截止时间，#格式为YYYY-MM-DD HH:MM:SS
+            "questionnaire_id":                 integer,    //问卷id
+            "task_id":                          integer,    //问卷对应的任务id
+            "questionnaire_closed":             integer,    //是否截止
+            "questionnaire_deadline":           string,     //截止时间，#格式为YYYY-MM-DD HH:MM:SS
             "questions": [
                 {
-                    "question_id":             integer,    //题目id
-                    "questionnaire_id":        integer,    //题目所属的问卷id
-                    "question_description":    string,     //题目描述
-                    "question_type":           integer,    //题目类型，0为单选，1为多选，2为填空题
-                    "question_a":              string,     //选项A描述
-                    "question_b":              string,     //选项B描述
-                    "question_c":              string,     //选项C描述
-                    "question_d":              string      //选项D描述
+                    "question_id":              integer,    //题目id
+                    "questionnaire_id":         integer,    //题目所属的问卷id
+                    "question_description":     string,     //题目描述
+                    "question_type":            integer,    //题目类型，0为单选，1为多选，2为填空题
+                    "question_a":               string,     //选项A描述
+                    "question_b":               string,     //选项B描述
+                    "question_c":               string,     //选项C描述
+                    "question_d":               string      //选项D描述
                 }
             ]
         }     
@@ -1065,10 +1169,10 @@ GET /sms/verification_code/15989061915
 ```
 
 
-## 接受任务
+## 接受一个跑腿的任务(前端需要判断任务是否是自己发布的, 是否有人领取了, 是否取消了)
 
 > `POST /task/acceptance`
-
+`已测试`
 **参数**
 
 ```
@@ -1083,6 +1187,9 @@ GET /sms/verification_code/15989061915
 {
     "code":       integer,    //状态码
     "message":    string,     //信息
+    "data": {                 //空对象
+
+    }
 }
 ```
 
@@ -1092,7 +1199,10 @@ GET /sms/verification_code/15989061915
 ```
 {
     "code": 200,
-    "message": "OK"
+    "message": "OK",
+    "data": {
+
+    }
 }
 ```
 - 400
@@ -1113,7 +1223,7 @@ GET /sms/verification_code/15989061915
 ## 完成拿快递和外卖的任务(平台把钱给领取者)
 
 > `POST /task/delivery/complishment` 
-
+`已测试`
 **参数**
 
 ```
@@ -1128,6 +1238,9 @@ GET /sms/verification_code/15989061915
 {
     "code":       integer,    //状态码
     "message":    string,     //信息
+    "data": {                 //空对象
+
+    }
 }
 ```
 
@@ -1138,7 +1251,10 @@ GET /sms/verification_code/15989061915
 ```
 {
     "code": 200,
-    "message": "OK"
+    "message": "OK",
+    "data": {
+
+    }
 }
 ```
 
@@ -1160,10 +1276,10 @@ GET /sms/verification_code/15989061915
 
 
 
-## 发布者取消拿快递和外卖的任务(钱退回给发布者)
+## 发布者取消拿快递和外卖的任务(钱退回给发布者)(前端需要保证只能取消未完成的任务)
 
 > `DELETE /task/delivery/{task_id}` 
-
+`已测试`
 **参数**	
 
 ```
@@ -1178,6 +1294,7 @@ GET /sms/verification_code/15989061915
 {
     "code":       integer,    //状态码
     "message":    string,     //信息
+    "data":                   //空对象
 }
 ```
 
@@ -1187,7 +1304,10 @@ GET /sms/verification_code/15989061915
 ```
 {
     "code": 200,
-    "message": "OK"
+    "message": "OK",
+    "data": {
+
+    }
 }
 ```
 - 400
@@ -1204,8 +1324,8 @@ GET /sms/verification_code/15989061915
 ```
 
 
-## 新建一个拿快递和外卖的任务(发布者把钱给平台)
-
+## 新建一个拿快递和外卖的任务(发布者把钱寄存在平台上, 当任务完成, 平台将钱给完成者)
+`已测试`
 > `POST /task/delivery` 
 
 **参数**
@@ -1216,15 +1336,25 @@ GET /sms/verification_code/15989061915
         "task_type":                integer,    //订单类型，0为拿快递和外卖，1为问卷
         "task_sketch":              string      //任务简述
         "task_bonus":               integer,    //悬赏金额
-        "task_publishDate":         string,     //发布时间  
     }
     "delivery" {
         "delivery_detail":          string,     //递送任务详情
-        "delivery_picked":          string      //是否被接取
-        "delivery_complished":      integer,    //是否完成，0为否，1为是
-        "delivery_complishDate":    string      //完成时间  
     }
-   
+}
+```
+
+**参数示例**
+
+```
+{
+    "task": {
+        "task_type":                0,
+        "task_sketch":              "帮忙拿快递",
+        "task_bonus":               1
+    },
+    "delivery": {
+        "delivery_detail":          "菜鸟驿站5号柜包裹码xxxx-xxxx"
+    }
 }
 ```
 
@@ -1234,6 +1364,9 @@ GET /sms/verification_code/15989061915
 {
     "code":       integer,    //状态码
     "message":    string      //信息
+    "data": {                 //空对象
+
+    }
 }
 ```
 
@@ -1242,7 +1375,10 @@ GET /sms/verification_code/15989061915
 ```
 {
     "code": 200,
-    "message": "OK"
+    "message": "OK",
+    "data": {
+
+    }
 }
 ```
 - 400
@@ -1250,8 +1386,6 @@ GET /sms/verification_code/15989061915
     "code": 400,
     "message": "余额不足"
 ```
-
-
 
 ```
     "code": 400,
@@ -1264,8 +1398,8 @@ GET /sms/verification_code/15989061915
     "message": "用户未登录"
 ```
 
-## 新建一个问卷任务(发布者把钱给平台)
-
+## 新建一个问卷任务(执行这个操作, 发布者会先把钱给平台)
+`已测试`
 > `POST /task/questionnaire` 
 
 **参数**
@@ -1276,11 +1410,8 @@ GET /sms/verification_code/15989061915
         "task_type":                       string,     //订单类型，0为拿快递和外卖，1为问卷
         "task_sketch":                     string      //任务简述
         "task_bonus":                      integer,    //悬赏金额
-        "task_publishDate":                string,     //发布时间  
-    }
+    },
     "questionnaire": {
-        "questionnaire_closed":            integer,    //是否截止
-        "questionnaire_deadline":          string,     //截止时间
         "questionnaire_number":			   integer,	   //打算发布的问卷份数(task_bonus * questionnaire_number = 总金额)
         "questions": [
             {
@@ -1296,12 +1427,48 @@ GET /sms/verification_code/15989061915
 }
 ```
 
+**参数示例**
+
+```
+{
+    "task": {
+        "task_type":                1,
+        "task_sketch":              "大学生运动爱好调查",
+        "task_bonus":               1 
+    },
+    "questionnaire": {
+        "questionnaire_number":			   2,	 
+        "questions": [
+            {
+                "question_description":    "你的姓名",
+                "question_type":           2,
+                "question_a":              "",
+                "question_b":              "",
+                "question_c":              "",
+                "question_d":              ""
+            },
+            {
+                "question_description":    "你喜欢什么运动?",
+                "question_type":           1,
+                "question_a":              "篮球",     
+                "question_b":              "羽毛球",    
+                "question_c":              "乒乓球",    
+                "question_d":              "排球"     
+            }
+        ]
+    }
+}
+```
+
 **返回值**
 
 ```
 {
     "code":       integer,    //状态码
     "message":    string      //信息
+    "data": {                 //空对象
+
+    }
 }
 ```
 
@@ -1310,7 +1477,10 @@ GET /sms/verification_code/15989061915
 ```
 {
     "code": 200,
-    "message": "OK"
+    "message": "OK",
+    "data": {
+
+    }
 }
 ```
 - 400
@@ -1325,10 +1495,10 @@ GET /sms/verification_code/15989061915
     "message": "用户未登录"
 ```
 
-## 填写者提交问卷的答案
+## 填写者提交问卷的答案(前端需要保证只填写未截止的问卷)
 
 > `POST /task/questionnaire/answer` 
-
+`已测试`
 **参数**
 
 ```
@@ -1343,12 +1513,33 @@ GET /sms/verification_code/15989061915
 }
 ```
 
+**参数示例**
+
+```
+{
+    "questionnaire_id":    1,
+    "answers": [
+        {
+            "question_id":    1,
+            "answer_content": "CoderUtil"
+        },
+        {
+            "question_id":    2,
+            "answer_content": "AB"
+        }
+    ]
+}
+```
+
 **返回值**
 
 ```
 {
     "code":       integer,    //状态码
     "message":    string      //信息
+    "data": {                 //空对象
+
+    }
 }
 ```
 
@@ -1357,7 +1548,10 @@ GET /sms/verification_code/15989061915
 ```
 {
     "code": 200,
-    "message": "OK"
+    "message": "OK",
+    "data": {
+
+    }
 }
 ```
 - 400
@@ -1375,7 +1569,7 @@ GET /sms/verification_code/15989061915
 ## 填写者获取自己填写过的答卷(包含题目和答案)
 
 > `GET /task/questionnaire/answerSheet/{questionnaire_id}` 
-
+`已测试`
 **参数**	
 
 ```
@@ -1402,7 +1596,7 @@ GET /sms/verification_code/15989061915
                     "question_b":              string,
                     "question_c":              string,
                     "question_d":              string,
-                }
+                },
                 "answer": {
                     "answer_id":               integer,    //答案id
                     "answerSheet_id":          integer,    //答卷id
@@ -1442,7 +1636,7 @@ GET /sms/verification_code/15989061915
 ## 发布者查看问卷的统计信息
 
 > `GET /task/questionnaire/Statistics/{questionnaire_id}` 
-
+`已测试`
 **参数**
 
 ```
@@ -1515,8 +1709,8 @@ GET /sms/verification_code/15989061915
 
 ## 发布者截止问卷
 
-> `POST /task/questionnaire/closure` 
-
+> `PUT /task/questionnaire/closure` 
+`已测试`
 **参数**
 
 ```
@@ -1531,6 +1725,9 @@ GET /sms/verification_code/15989061915
 {
     "code":       integer,    //状态码
     "message":    string      //信息
+    "data": {                 //空对象
+
+    }
 }
 ```
 
@@ -1539,7 +1736,10 @@ GET /sms/verification_code/15989061915
 ```
 {
     "code": 200,
-    "message": "OK"
+    "message": "OK",
+    "data": {
+        
+    }
 }
 ```
 - 400
@@ -1561,7 +1761,7 @@ GET /sms/verification_code/15989061915
 ## 获取当前用户的交易历史
 
 > `GET /bill`
-
+`已测试`
 **参数**
 
 ```
